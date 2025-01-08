@@ -15,7 +15,7 @@
   "author": "Shreeti Shrestha",
   "license": "ISC",
   "dependencies": {
-    "aws-sdk": "^2.1692.0",
+    "@aws-sdk/client-dynamodb": "^3.724.0",
     "cluster": "^0.7.7",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",

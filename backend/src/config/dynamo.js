@@ -1,21 +1,35 @@
-import AWS from "aws-sdk";
+import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
+import {
+  DynamoDBDocumentClient,
+  GetCommand,
+  QueryCommand,
+  ScanCommand,
+  PutCommand,
+  UpdateCommand,
+  DeleteCommand,
+  BatchWriteCommand,
+} from "@aws-sdk/lib-dynamodb";
 
-const documentClient = new AWS.DynamoDB.DocumentClient({
+const client = new DynamoDBClient({
   region: "local",
   endpoint: "http://localhost:8000",
-  accessKeyId: "local",
-  secretAccessKey: "local",
+  credentials: {
+    accessKeyId: "local",
+    secretAccessKey: "local",
+  },
 });
+
+const docClient = DynamoDBDocumentClient.from(client);
 
 class DynamoDBWrapper {
   async get(tableName, id) {
-    const params = {
+    const command = new GetCommand({
       TableName: tableName,
       Key: { id },
-    };
+    });
 
     try {
-      const { Item } = await documentClient.get(params).promise();
+      const { Item } = await docClient.send(command);
       return Item || null;
     } catch (error) {
       console.error(`DynamoDB GET Error: ${error.message}`, { tableName, id });
@@ -24,17 +38,17 @@ class DynamoDBWrapper {
   }
 
   async query(tableName, indexName, keyName, keyValue) {
-    const params = {
+    const command = new QueryCommand({
       TableName: tableName,
       IndexName: indexName,
       KeyConditionExpression: `${keyName} = :value`,
       ExpressionAttributeValues: {
         ":value": keyValue,
       },
-    };
+    });
 
     try {
-      const { Items } = await documentClient.query(params).promise();
+      const { Items } = await docClient.send(command);
       return Items || [];
     } catch (error) {
       console.error(`DynamoDB QUERY Error: ${error.message}`, {
@@ -46,16 +60,14 @@ class DynamoDBWrapper {
   }
 
   async getAll(tableName, { limit = 50, lastKey = null } = {}) {
-    const params = {
+    const command = new ScanCommand({
       TableName: tableName,
       Limit: limit,
       ...(lastKey && { ExclusiveStartKey: lastKey }),
-    };
+    });
 
     try {
-      const { Items, LastEvaluatedKey } = await documentClient
-        .scan(params)
-        .promise();
+      const { Items, LastEvaluatedKey } = await docClient.send(command);
       return {
         items: Items || [],
         lastKey: LastEvaluatedKey,
@@ -71,16 +83,16 @@ class DynamoDBWrapper {
       item.id = Date.now().toString();
     }
 
-    const params = {
+    const command = new PutCommand({
       TableName: tableName,
       Item: {
         ...item,
         updatedAt: new Date().toISOString(),
       },
-    };
+    });
 
     try {
-      await documentClient.put(params).promise();
+      await docClient.send(command);
       return item;
     } catch (error) {
       console.error(`DynamoDB PUT Error: ${error.message}`, {
@@ -102,17 +114,17 @@ class DynamoDBWrapper {
       expressionAttributeValues[`:${key}`] = value;
     });
 
-    const params = {
+    const command = new UpdateCommand({
       TableName: tableName,
       Key: { id },
       UpdateExpression: `SET ${updateExpressions.join(", ")}`,
       ExpressionAttributeNames: expressionAttributeNames,
       ExpressionAttributeValues: expressionAttributeValues,
       ReturnValues: "ALL_NEW",
-    };
+    });
 
     try {
-      const { Attributes } = await documentClient.update(params).promise();
+      const { Attributes } = await docClient.send(command);
       return Attributes;
     } catch (error) {
       console.error(`DynamoDB UPDATE Error: ${error.message}`, {
@@ -124,13 +136,13 @@ class DynamoDBWrapper {
   }
 
   async delete(tableName, id) {
-    const params = {
+    const command = new DeleteCommand({
       TableName: tableName,
       Key: { id },
-    };
+    });
 
     try {
-      await documentClient.delete(params).promise();
+      await docClient.send(command);
       return true;
     } catch (error) {
       console.error(`DynamoDB DELETE Error: ${error.message}`, {
@@ -151,14 +163,14 @@ class DynamoDBWrapper {
       },
     }));
 
-    const params = {
+    const command = new BatchWriteCommand({
       RequestItems: {
         [tableName]: batchItems,
       },
-    };
+    });
 
     try {
-      await documentClient.batchWrite(params).promise();
+      await docClient.send(command);
       return items;
     } catch (error) {
       console.error(`DynamoDB BATCH WRITE Error: ${error.message}`, {

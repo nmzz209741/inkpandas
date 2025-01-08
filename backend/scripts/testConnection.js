@@ -1,16 +1,22 @@
-import AWS from 'aws-sdk';
+import { DynamoDBClient, ListTablesCommand } from "@aws-sdk/client-dynamodb";
 
-const dynamodb = new AWS.DynamoDB({
-  region: 'local',
-  endpoint: 'http://localhost:8000',
-  accessKeyId: 'local',
-  secretAccessKey: 'local'
+const client = new DynamoDBClient({
+  region: "local",
+  endpoint: "http://localhost:8000",
+  credentials: {
+    accessKeyId: "local",
+    secretAccessKey: "local",
+  },
 });
 
-dynamodb.listTables({}, (err, data) => {
-  if (err) {
-    console.error('Error:', err);
-  } else {
-    console.log('Connected! Tables:', data.TableNames);
+const testConnection = async () => {
+  try {
+    const command = new ListTablesCommand({});
+    const { TableNames } = await client.send(command);
+    console.log("Connected! Tables:", TableNames);
+  } catch (error) {
+    console.error("Error:", error);
   }
-});
+};
+
+testConnection();
