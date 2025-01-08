@@ -55,3 +55,36 @@ export const register = async (req, res) => {
     res.status(500).json({ error: "Failed to register user" });
   }
 };
+
+export const signin = async (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password) {
+    return res
+      .status(400)
+      .json({ error: "Username and password are required" });
+  }
+
+  try {
+    const user = await dynamo.query(usersTable, "EmailIndex", "email", email);
+    if (!user.length) {
+      return res.status(400).json({ error: "Invalid credentials" });
+    }
+    const { password: expectedPassword, id, email } = user[0];
+
+    const isMatch = await bcrypt.compare(password, expectedPassword);
+    if (!isMatch) {
+      return res.status(400).json({ error: "Invalid credentials" });
+    }
+
+    const token = jwt.sign({ id, email }, JWT_SECRET, {
+      expiresIn: "30d",
+    });
+
+    res.status(201).json({
+      message: "User logged in successfully",
+      token,
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to login user" });
+  }
+};
