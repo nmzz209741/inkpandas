@@ -1,4 +1,5 @@
 # Node.js
+backend/node_modules/
 node_modules/
 npm-debug.log
 yarn-error.log
@@ -7,10 +8,6 @@ yarn-error.log
 logs/
 *.log
 *.log.*
-
-# Dependency directories
-node_modules/
-jspm_packages/
 
 # Optional npm cache directory
 .npm
@@ -31,24 +28,12 @@ coverage/
 # Compiled binary addons (https://nodejs.org/api/addons.html)
 build/Release
 
-# Dependency directories
-node_modules/
-jspm_packages/
-
-# Optional npm cache directory
-.npm
-
-# Optional eslint cache
-.eslintcache
-
-# dotenv environment variables file
-.env
-
-
 # DynamoDB Local files
 .dynamodb/
-
 
 # Temporary folders
 tmp/
 temp/
+
+# Docker files
+docker
