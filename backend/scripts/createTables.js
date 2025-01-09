@@ -39,7 +39,7 @@ const createTables = async () => {
       KeySchema: [{ AttributeName: "id", KeyType: "HASH" }],
       AttributeDefinitions: [
         { AttributeName: "id", AttributeType: "S" },
-        { AttributeName: "createdAt", AttributeType: "S" },
+        { AttributeName: "createdAt", AttributeType: "S" }
       ],
       GlobalSecondaryIndexes: [
         {

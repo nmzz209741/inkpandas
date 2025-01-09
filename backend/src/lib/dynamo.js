@@ -59,10 +59,11 @@ class DynamoDBWrapper {
     }
   }
 
-  async getAll(tableName, { limit = 50, lastKey = null } = {}) {
+  async getAll(tableName, { indexName, limit = 50, lastKey = null } = {}) {
     const command = new ScanCommand({
       TableName: tableName,
       Limit: limit,
+      IndexName: indexName,
       ...(lastKey && { ExclusiveStartKey: lastKey }),
     });
 
