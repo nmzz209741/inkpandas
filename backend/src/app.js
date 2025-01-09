@@ -33,6 +33,15 @@ if (cluster.isPrimary) {
     app.use("/api/articles", articleRoutes);
     app.use("/api/auth", authRoutes);
 
+    // Health
+    app.get("/health", (req, res) => {
+      res.status(200).json({
+        status: "healthy",
+        pid: process.pid,
+        uptime: process.uptime(),
+      });
+    });
+
     // Error handling
     app.use(errorHandler);
 
@@ -42,4 +51,3 @@ if (cluster.isPrimary) {
   };
   bootstrapServer();
 }
-
