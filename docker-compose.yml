@@ -14,6 +14,16 @@ services:
       - dynamodb-local
     networks:
       - backend-network
+    develop:
+      watch:
+        - path: ./backend
+          action: sync+restart
+          target: /app/backend
+          ignore:
+            - node_modules/
+        - path: ./backend/package.json
+          action: rebuild
+
   dynamodb-local:
     image: amazon/dynamodb-local:latest
     container_name: dynamodb-local
