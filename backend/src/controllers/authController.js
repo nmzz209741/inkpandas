@@ -1,7 +1,7 @@
-import { dynamo } from "../lib/dynamo";
+import { dynamo } from "../lib/dynamo.js";
 import bcrypt from "bcryptjs";
-import nanoid from "nanoid";
-import { jwt } from "jsonwebtoken";
+import { nanoid } from "nanoid";
+import jwt from "jsonwebtoken";
 
 const usersTable = "Users";
 
@@ -40,7 +40,7 @@ export const register = async (req, res) => {
     if (user) {
       const token = jwt.sign(
         { id: newUser.id, email: newUser.email },
-        JWT_SECRET,
+        process.env.JWT_SECRET,
         {
           expiresIn: "30d",
         }
@@ -69,14 +69,14 @@ export const signin = async (req, res) => {
     if (!user.length) {
       return res.status(400).json({ error: "Invalid credentials" });
     }
-    const { password: expectedPassword, id, email } = user[0];
+    const { password: expectedPassword, id } = user[0];
 
     const isMatch = await bcrypt.compare(password, expectedPassword);
     if (!isMatch) {
       return res.status(400).json({ error: "Invalid credentials" });
     }
 
-    const token = jwt.sign({ id, email }, JWT_SECRET, {
+    const token = jwt.sign({ id, email }, process.env.JWT_SECRET, {
       expiresIn: "30d",
     });
 

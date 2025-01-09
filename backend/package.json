@@ -16,6 +16,7 @@
   "license": "ISC",
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.724.0",
+    "@aws-sdk/lib-dynamodb": "^3.724.0",
     "bcryptjs": "^2.4.3",
     "cluster": "^0.7.7",
     "cors": "^2.8.5",
