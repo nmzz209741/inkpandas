@@ -9,9 +9,7 @@ export const register = async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return res
-      .status(400)
-      .json({ error: "Username and password are required" });
+    res.status(400).json({ error: "Username and password are required" });
   }
 
   try {
@@ -59,15 +57,13 @@ export const register = async (req, res) => {
 export const signin = async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
-    return res
-      .status(400)
-      .json({ error: "Username and password are required" });
+    res.status(400).json({ error: "Username and password are required" });
   }
 
   try {
     const user = await dynamo.query(usersTable, "EmailIndex", "email", email);
     if (!user.length) {
-      return res.status(400).json({ error: "Invalid credentials" });
+      res.status(400).json({ error: "Invalid credentials" });
     }
     const { password: expectedPassword, id } = user[0];
 

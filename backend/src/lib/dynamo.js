@@ -12,7 +12,7 @@ import {
 
 const client = new DynamoDBClient({
   region: "local",
-  endpoint: "http://localhost:8000",
+  endpoint: "http://dynamodb-local:8000",
   credentials: {
     accessKeyId: "local",
     secretAccessKey: "local",

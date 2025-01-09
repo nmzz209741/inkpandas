@@ -8,8 +8,12 @@ services:
       - "3000:3000"
     environment:
       - NODE_ENV=local
+      - AWS_ACCESS_KEY_ID=local
+      - AWS_SECRET_ACCESS_KEY=local
     depends_on:
       - dynamodb-local
+    networks:
+      - backend-network
   dynamodb-local:
     image: amazon/dynamodb-local:latest
     container_name: dynamodb-local
@@ -19,3 +23,9 @@ services:
     volumes:
       - "./docker/dynamodb:/home/dynamodblocal/data"
     working_dir: /home/dynamodblocal
+    networks:
+      - backend-network
+
+networks:
+  backend-network:
+    driver: bridge
