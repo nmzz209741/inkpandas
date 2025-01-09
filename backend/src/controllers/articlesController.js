@@ -1,8 +1,8 @@
 import { dynamo } from "../lib/dynamo.js";
 import asyncHandler from "express-async-handler";
 import createError from "http-errors";
-import { nanoid } from "nanoid";
 import { ARTICLES_TABLE } from "../constants/index.js";
+import { ArticleModel } from "../models/article.js";
 
 export const getArticles = asyncHandler(async (req, res) => {
   const { page, limit = 50 } = req.query;
@@ -40,13 +40,8 @@ export const createArticle = asyncHandler(async (req, res) => {
     throw createError(400, "Title and content are required");
   }
   const userId = req.user?.id;
-  const newArticle = {
-    id: nanoid(),
-    userId,
-    title: title.trim(),
-    content: content.trim(),
-    createdAt: new Date().toISOString(),
-  };
+
+  const newArticle = ArticleModel(title.trim(), content.trim(), userId);
 
   try {
     const article = await dynamo.put(ARTICLES_TABLE, newArticle);

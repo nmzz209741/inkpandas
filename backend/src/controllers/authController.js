@@ -1,8 +1,8 @@
 import { dynamo } from "../lib/dynamo.js";
 import bcrypt from "bcryptjs";
-import { nanoid } from "nanoid";
 import jwt from "jsonwebtoken";
 import { USERS_TABLE, USERS_TABLE_GSI } from "../constants/index.js";
+import { UserModel } from "../models/user.js";
 
 export const register = async (req, res) => {
   const { email, password } = req.body;
@@ -25,13 +25,7 @@ export const register = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPwd = await bcrypt.hash(password, salt);
 
-    const newUser = {
-      id: nanoid(),
-      email,
-      password: hashedPwd,
-      createdAt: new Date().toISOString(),
-    };
-
+    const newUser = UserModel(email, hashedPwd);
     const user = await dynamo.put(USERS_TABLE, newUser);
 
     if (user) {
