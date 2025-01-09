@@ -2,8 +2,7 @@ import { dynamo } from "../lib/dynamo.js";
 import bcrypt from "bcryptjs";
 import { nanoid } from "nanoid";
 import jwt from "jsonwebtoken";
-
-const usersTable = "Users";
+import { USERS_TABLE, USERS_TABLE_GSI } from "../constants/index.js";
 
 export const register = async (req, res) => {
   const { email, password } = req.body;
@@ -14,8 +13,8 @@ export const register = async (req, res) => {
 
   try {
     const existingUser = await dynamo.query(
-      usersTable,
-      "EmailIndex",
+      USERS_TABLE,
+      USERS_TABLE_GSI,
       "email",
       email
     );
@@ -33,7 +32,7 @@ export const register = async (req, res) => {
       createdAt: new Date().toISOString(),
     };
 
-    const user = await dynamo.put(usersTable, newUser);
+    const user = await dynamo.put(USERS_TABLE, newUser);
 
     if (user) {
       const token = jwt.sign(
@@ -61,7 +60,12 @@ export const signin = async (req, res) => {
   }
 
   try {
-    const user = await dynamo.query(usersTable, "EmailIndex", "email", email);
+    const user = await dynamo.query(
+      USERS_TABLE,
+      USERS_TABLE_GSI,
+      "email",
+      email
+    );
     if (!user.length) {
       res.status(400).json({ error: "Invalid credentials" });
     }

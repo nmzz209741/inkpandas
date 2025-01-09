@@ -1,4 +1,5 @@
 import express from "express";
+import { protect } from "../middlewares/auth.js";
 import {
   getArticles,
   getArticleById,
@@ -11,8 +12,8 @@ const router = express.Router();
 
 router.get("/", getArticles);
 router.get("/:id", getArticleById);
-router.post("/", createArticle);
-router.patch("/:id", updateArticle);
-router.delete("/:id", deleteArticle);
+router.post("/", protect, createArticle);
+router.patch("/:id", protect, updateArticle);
+router.delete("/:id", protect, deleteArticle);
 
 export default router;
