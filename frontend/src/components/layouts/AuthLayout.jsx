@@ -8,7 +8,7 @@ const styles = {
     minHeight: "100vh",
     display: "flex",
     flexDirection: "column",
-    background: "linear-gradient(45deg, #1976d2 30%, #21CBF3 90%)",
+    background: "linear-gradient(45deg, #059f48 30%, #034620 90%)",
   },
   main: {
     flex: 1,
