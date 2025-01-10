@@ -9,6 +9,7 @@ import ArticlesForm from "../components/pages/ArticlesForm";
 import AuthLayout from "../components/layouts/AuthLayout";
 import LoginPage from "../components/pages/LoginPage";
 import RegisterPage from "../components/pages/RegisterPage";
+import ProtectedRoute from "../components/common/ProtectedRoute";
 
 const router = createBrowserRouter([
   {
@@ -27,15 +28,28 @@ const router = createBrowserRouter([
       },
       {
         path: "dashboard",
-        element: <DashboardPage />,
+        element: (
+          <ProtectedRoute>
+            <DashboardPage />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "articles/new",
-        element: <ArticlesForm />,
+        element: (
+          <ProtectedRoute>
+            <ArticlesForm />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "articles/:id/edit",
-        element: <ArticlesForm />,
+
+        element: (
+          <ProtectedRoute>
+            <ArticlesForm />
+          </ProtectedRoute>
+        ),
       },
     ],
   },
