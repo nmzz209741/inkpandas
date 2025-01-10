@@ -7,14 +7,22 @@ import {
   updateArticle,
 } from "../api/articlesApi";
 
-export const useArticles = (page, limit) => {
-  return useQuery({
+export const useGetArticles = (page, limit) => {
+  const { data, isLoading, error, isFetching } = useQuery({
     queryKey: ["articles", page, limit],
     queryFn: () => getAllArticles(page, limit),
+    keepPreviousData: true,
   });
+
+  return {
+    data,
+    isLoading,
+    error,
+    isFetchingNextPage: isFetching && !!page,
+  };
 };
 
-export const useArticle = (id) => {
+export const useGetArticle = (id) => {
   return useQuery({
     queryKey: ["article", id],
     queryFn: () => getArticleById(id),
