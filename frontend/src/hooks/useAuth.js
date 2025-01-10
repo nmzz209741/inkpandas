@@ -26,6 +26,7 @@ export const useAuth = () => {
       localStorage.setItem("user", JSON.stringify(user));
       setUser(user);
       setError(null);
+      queryClient.invalidateQueries({ queryKey: ["articles"] });
     },
     onError: (err) => {
       setError(err.response?.data?.message || "Login Failed");
@@ -40,9 +41,10 @@ export const useAuth = () => {
       localStorage.setItem("user", JSON.stringify(user));
       setUser(user);
       setError(null);
+      queryClient.invalidateQueries({ queryKey: ["articles"] });
     },
     onError: (err) => {
-      setError(err.response?.data?.message || "Login Failed");
+      setError(err.response?.data?.message || "Registration Failed");
     },
   });
 
