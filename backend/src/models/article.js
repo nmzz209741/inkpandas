@@ -6,4 +6,5 @@ export const ArticleModel = (title, content, userId) => ({
   content,
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
+  userId,
 });
