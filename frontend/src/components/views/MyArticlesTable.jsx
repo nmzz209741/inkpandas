@@ -13,6 +13,7 @@ import {
   Tooltip,
 } from "@mui/material";
 import { Edit, Eye, Trash2 } from "lucide-react";
+import { stripHtml } from "../../utils/contentUtils";
 
 const styles = {
   noArticles: {
@@ -90,7 +91,7 @@ const MyArticlesTable = ({
                 </TableCell>
                 <TableCell>
                   <Typography variant="body2" sx={styles.description}>
-                    {article.content}
+                    {stripHtml(article.content)}
                   </Typography>
                 </TableCell>
                 <TableCell>

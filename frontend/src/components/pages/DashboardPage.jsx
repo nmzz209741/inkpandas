@@ -9,6 +9,7 @@ import LoadingSpinner from "../common/LoadingSpinner";
 import ErrorLoading from "../common/ErrorLoading";
 import PageHeading from "../common/PageHeading";
 import MyArticlesTable from "../views/MyArticlesTable";
+import { stripHtml } from "../../utils/contentUtils";
 
 const styles = {
   header: {
@@ -93,7 +94,7 @@ const DashboardPage = () => {
       (article) =>
         article.userId === user?.id &&
         (article.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          article.content.toLowerCase().includes(searchTerm.toLowerCase()))
+          stripHtml(article.content).toLowerCase().includes(searchTerm.toLowerCase()))
     ) || [];
 
   const sortedArticles = sortArticles(filteredArticles);

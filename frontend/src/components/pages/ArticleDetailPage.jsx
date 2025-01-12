@@ -77,14 +77,6 @@ const styles = {
   },
 };
 
-function isHTML(str) {
-  const doc = new DOMParser().parseFromString(str, "text/html");
-  // Check if the content has any HTML tags other than basic text formatting
-  return Array.from(doc.body.childNodes).some(
-    (node) => node.nodeType === 1 && !["BR", "P"].includes(node.tagName)
-  );
-}
-
 const ArticleDetailPage = () => {
   const { id } = useParams();
   const { user } = useAuthContext();
@@ -121,7 +113,6 @@ const ArticleDetailPage = () => {
     ? formatDate(article.updatedAt)
     : null;
 
-  const contentIsHTML = isHTML(article.content);
 
   return (
     <Container sx={styles.container}>
@@ -167,17 +158,13 @@ const ArticleDetailPage = () => {
       <Divider sx={styles.divider} />
 
       <Paper sx={styles.content}>
-        {contentIsHTML ? (
+        {
           <div
             className="ql-editor"
             dangerouslySetInnerHTML={{ __html: article.content }}
             style={styles.htmlContent}
           />
-        ) : (
-          <Typography component="div" sx={styles.plainContent}>
-            {article.content}
-          </Typography>
-        )}
+        }
       </Paper>
     </Container>
   );

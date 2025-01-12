@@ -1,5 +1,6 @@
 import { Typography, Box, Chip, Paper, Grid2 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { stripHtml } from "../../utils/contentUtils";
 
 const styles = {
   articleCard: {
@@ -68,7 +69,7 @@ const ArticleCard = ({ article }) => {
           {article.title}
         </Typography>
         <Typography variant="body2" color="text.secondary" sx={styles.content}>
-          {article.content}
+          {stripHtml(article.content)}
         </Typography>
         <Box sx={styles.articleMeta}>
           <Typography variant="caption" color="text.secondary">

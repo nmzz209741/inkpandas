@@ -17,7 +17,6 @@ const styles = {
     width: "50vh",
     background: "secondary.main",
     maxHeight: { lg: "75vh", md: "75vh" },
-    // margin: "auto",
     borderRadius: "8px",
     boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
   },
