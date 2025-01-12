@@ -87,9 +87,9 @@ export const useCreateArticle = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (article) => createArticle(article),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["articles"] });
-      queryClient.invalidateQueries({ queryKey: ["myArticles"] });
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["articles"] });
+      await queryClient.invalidateQueries({ queryKey: ["myArticles"] });
     },
   });
 };
@@ -98,10 +98,15 @@ export const useUpdateArticle = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({ id, data }) => updateArticle(id, data),
-    onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: ["articles"] });
-      queryClient.invalidateQueries({ queryKey: ["myarticles"] });
-      queryClient.invalidateQueries({ queryKey: ["article", variables.id] });
+    onSuccess: async (data, variables) => {
+      await queryClient.invalidateQueries({ queryKey: ["articles"] });
+      await queryClient.invalidateQueries({
+        queryKey: ["myArticles"],
+        refetchType: "all",
+      });
+      await queryClient.invalidateQueries({
+        queryKey: ["article", variables.id],
+      });
     },
   });
 };
