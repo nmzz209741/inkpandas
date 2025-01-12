@@ -11,6 +11,7 @@ import { Link as RouterLink, useLocation } from "react-router-dom";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { useState } from "react";
 import { Menu as MenuIcon } from "lucide-react";
+import logo from "../../assets/images/bgLogo.png";
 import MobileNav from "./MobileNav";
 
 const styles = {
@@ -25,6 +26,11 @@ const styles = {
     textDecoration: "none",
     color: "inherit",
     marginRight: { xs: 1, md: 4 },
+  },
+  logoImage: {
+    width: 160,
+    height: 80,
+    objectFit: "contain",
   },
   spacer: {
     flexGrow: 1,
@@ -98,11 +104,16 @@ export default function Navbar() {
         )}
 
         {!isAuthPage && (
-          <Box sx={styles.desktopNav}>
-            {navItems.map((item, index) => (
-              <NavBarItem key={index} to={item.to} text={item.text} />
-            ))}
-          </Box>
+          <>
+            <RouterLink to="/" style={styles.logo}>
+              <img src={logo} alt="Logo" style={styles.logoImage} />
+            </RouterLink>
+            <Box sx={styles.desktopNav}>
+              {navItems.map((item, index) => (
+                <NavBarItem key={index} to={item.to} text={item.text} />
+              ))}
+            </Box>
+          </>
         )}
 
         <Box sx={styles.spacer} />
