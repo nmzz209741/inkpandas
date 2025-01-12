@@ -19,6 +19,7 @@ import { Edit, ArrowLeft } from "lucide-react";
 import LoadingSpinner from "../common/LoadingSpinner";
 import ErrorLoading from "../common/ErrorLoading";
 import { formatDate } from "../../utils/dateUtils";
+import PageHeading from "../common/PageHeading";
 
 const styles = {
   container: {
@@ -89,8 +90,7 @@ const ArticleDetailPage = () => {
   const { user } = useAuthContext();
   const navigate = useNavigate();
 
-  const { data, isLoading, error } = useGetArticle(id);
-  const article = data?.result;
+  const { data: article, isLoading, error } = useGetArticle(id);
   if (isLoading) {
     return <LoadingSpinner />;
   }
@@ -135,9 +135,7 @@ const ArticleDetailPage = () => {
         </Button>
 
         <Box sx={styles.titleSection}>
-          <Typography variant="h3" component="h1">
-            {article.title}
-          </Typography>
+          <PageHeading heading={article.title} />
           {isAuthor && (
             <Tooltip title="Edit Article">
               <IconButton

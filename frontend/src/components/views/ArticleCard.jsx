@@ -1,4 +1,4 @@
-import { Typography, Box, Chip, Paper, Grid2, Button } from "@mui/material";
+import { Typography, Box, Chip, Paper, Grid2 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 const styles = {

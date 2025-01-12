@@ -89,6 +89,7 @@ export const useCreateArticle = () => {
     mutationFn: (article) => createArticle(article),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["articles"] });
+      queryClient.invalidateQueries({ queryKey: ["myArticles"] });
     },
   });
 };
@@ -96,9 +97,10 @@ export const useCreateArticle = () => {
 export const useUpdateArticle = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (id, data) => updateArticle(id, data),
+    mutationFn: ({ id, data }) => updateArticle(id, data),
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ["articles"] });
+      queryClient.invalidateQueries({ queryKey: ["myArticles"] });
       queryClient.invalidateQueries({ queryKey: ["article", variables.id] });
     },
   });
@@ -110,6 +112,7 @@ export const useDeleteArticle = () => {
     mutationFn: (id) => deleteArticle(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["articles"] });
+      queryClient.invalidateQueries({ queryKey: ["myArticles"] });
     },
   });
 };

@@ -27,7 +27,7 @@ const getMyArticles = async (page, limit = 100) => {
 const getArticleById = async (id) => {
   try {
     const response = await api.get(`/articles/${id}`);
-    return response.data;
+    return response.data.result;
   } catch (error) {
     throw new Error(error.response?.data?.message || "Failed to fetch article");
   }
