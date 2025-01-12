@@ -17,7 +17,7 @@ const styles = {
 const Footer = () => {
   const location = useLocation();
   const isAuthPage =
-    location.pathname.includes("/login") ||
+    location.pathname.includes("/signin") ||
     location.pathname.includes("/register");
   return (
     <Box component="footer" sx={styles.footerContainer(isAuthPage)}>

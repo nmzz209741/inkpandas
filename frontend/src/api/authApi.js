@@ -13,7 +13,7 @@ const register = async (credentials) => {
 
 const login = async (credentials) => {
   try {
-    const response = await api.post("/auth/login", credentials);
+    const response = await api.post("/auth/signin", credentials);
     return response.data;
   } catch (error) {
     throw new Error(error.response?.data?.message || "User Login failed");

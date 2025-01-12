@@ -90,7 +90,7 @@ export default function MobileNav({
           <Divider sx={{ my: 1 }} />
           <List>
             <MobileNavItem
-              to="/login"
+              to="/signin"
               text="Logout"
               onClick={() => {
                 onLogout();

@@ -11,7 +11,6 @@ import { Link as RouterLink, useLocation } from "react-router-dom";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { useState } from "react";
 import { Menu as MenuIcon } from "lucide-react";
-import logo from "../../assets/images/bgLogo.png";
 import MobileNav from "./MobileNav";
 
 const styles = {
@@ -26,11 +25,6 @@ const styles = {
     textDecoration: "none",
     color: "inherit",
     marginRight: { xs: 1, md: 4 },
-  },
-  logoImage: {
-    width: 160,
-    height: 80,
-    objectFit: "contain",
   },
   spacer: {
     flexGrow: 1,
@@ -64,7 +58,7 @@ export default function Navbar() {
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   const isAuthPage =
-    location.pathname.includes("/login") ||
+    location.pathname.includes("/signin") ||
     location.pathname.includes("/register");
 
   const handleLogout = () => {
@@ -85,7 +79,7 @@ export default function Navbar() {
         { to: "/about", text: "About" },
       ]
     : [
-        { to: "/login", text: "Login" },
+        { to: "/signin", text: "Login" },
         { to: "/register", text: "Register" },
       ];
 
@@ -102,10 +96,6 @@ export default function Navbar() {
             <MenuIcon />
           </IconButton>
         )}
-
-        <RouterLink to="/" style={styles.logo}>
-          <img src={logo} alt="Logo" style={styles.logoImage} />
-        </RouterLink>
 
         {!isAuthPage && (
           <Box sx={styles.desktopNav}>
@@ -129,13 +119,13 @@ export default function Navbar() {
                 color="inherit"
                 component={RouterLink}
                 onClick={handleLogout}
-                to="/login"
+                to="/signin"
               >
                 Logout
               </Button>
             ) : (
               <>
-                <NavBarItem to="/login" text="Login" />
+                <NavBarItem to="/signin" text="Login" />
                 <NavBarItem to="/register" text="Register" />
               </>
             )}
