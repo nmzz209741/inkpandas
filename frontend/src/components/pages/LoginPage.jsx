@@ -23,10 +23,10 @@ const styles = {
     boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
   },
   form: {
-    width: "100%", 
+    width: "100%",
     display: "flex",
     flexDirection: "column",
-    gap: "1rem", 
+    gap: "1rem",
   },
   submitButton: {
     marginTop: "1rem",
@@ -54,7 +54,7 @@ const LoginPage = () => {
       await login(data);
       navigate(from, { replace: true });
     } catch (err) {
-      // Error is handled by useAuth hook
+      console.error(err);
     }
   };
 
@@ -122,7 +122,7 @@ const LoginPage = () => {
 
         <Box sx={styles.signupLink}>
           <Link component={RouterLink} to="/register" variant="body2">
-            Don't have an account? Sign up
+            Don&apos;t have an account? Sign up
           </Link>
         </Box>
       </Box>
