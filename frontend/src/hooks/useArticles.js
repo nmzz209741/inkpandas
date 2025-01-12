@@ -100,7 +100,7 @@ export const useUpdateArticle = () => {
     mutationFn: ({ id, data }) => updateArticle(id, data),
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ["articles"] });
-      queryClient.invalidateQueries({ queryKey: ["myArticles"] });
+      queryClient.invalidateQueries({ queryKey: ["myarticles"] });
       queryClient.invalidateQueries({ queryKey: ["article", variables.id] });
     },
   });

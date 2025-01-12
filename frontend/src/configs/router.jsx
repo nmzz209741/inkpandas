@@ -2,7 +2,6 @@ import { createBrowserRouter } from "react-router-dom";
 import BaseLayout from "../components/layouts/BaseLayout";
 import ErrorLayout from "../components/layouts/ErrorLayout";
 import HomePage from "../components/pages/HomePage";
-import AboutPage from "../components/pages/AboutPage";
 import DashboardPage from "../components/pages/DashboardPage";
 import ArticlesForm from "../components/pages/ArticlesForm";
 import AuthLayout from "../components/layouts/AuthLayout";
@@ -27,10 +26,6 @@ const router = createBrowserRouter([
         path: "articles/:id",
 
         element: <ArticleDetailPage />,
-      },
-      {
-        path: "about",
-        element: <AboutPage />,
       },
       {
         path: "dashboard",

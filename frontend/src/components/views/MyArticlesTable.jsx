@@ -45,10 +45,10 @@ const styles = {
 };
 
 const columns = [
-  { name: "title", fieldName: "title" },
-  { name: "description", fieldName: "description" },
-  { name: "created", fieldName: "createdAt" },
-  { name: "last updated", fieldName: "updatedAt" },
+  { name: "Title", fieldName: "title" },
+  { name: "Description", fieldName: "description" },
+  { name: "Created", fieldName: "createdAt" },
+  { name: "Last Updated", fieldName: "updatedAt" },
 ];
 
 const MyArticlesTable = ({

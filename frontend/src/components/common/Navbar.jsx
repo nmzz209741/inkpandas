@@ -75,14 +75,13 @@ export default function Navbar() {
   const navItems = [
     { to: "/", text: "Home" },
     { to: "/articles", text: "Articles" },
-    { to: "/about", text: "About" },
     ...(user ? [{ to: "/dashboard", text: "Dashboard" }] : []),
   ];
 
   const authNavItems = isAuthPage
     ? [
+        { to: "/", text: "Home" },
         { to: "/articles", text: "Articles" },
-        { to: "/about", text: "About" },
       ]
     : [
         { to: "/signin", text: "Login" },
@@ -120,8 +119,8 @@ export default function Navbar() {
 
         {isAuthPage ? (
           <Box>
+            <NavBarItem to="/" text="Home" isAuthPage />
             <NavBarItem to="/articles" text="Articles" isAuthPage />
-            <NavBarItem to="/about" text="About" isAuthPage />
           </Box>
         ) : (
           <Box sx={styles.desktopNav}>

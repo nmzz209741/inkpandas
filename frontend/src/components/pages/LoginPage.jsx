@@ -9,7 +9,7 @@ const LoginPage = () => {
       title="Sign in"
       authFunction={login}
       authError={error}
-      link={{ to: "/register", text: "Don&apos;t have an account? Sign up" }}
+      link={{ to: "/register", text: "Don't have an account? Sign up" }}
     />
   );
 };

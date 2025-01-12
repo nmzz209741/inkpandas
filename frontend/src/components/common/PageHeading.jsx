@@ -6,6 +6,7 @@ const styles = {
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 4,
+    textTransform: "capitalize",
   },
 };
 const PageHeading = ({ heading }) => {
