@@ -39,12 +39,22 @@ const createTables = async () => {
       KeySchema: [{ AttributeName: "id", KeyType: "HASH" }],
       AttributeDefinitions: [
         { AttributeName: "id", AttributeType: "S" },
-        { AttributeName: "createdAt", AttributeType: "S" }
+        { AttributeName: "createdAt", AttributeType: "S" },
+        { AttributeName: "userId", AttributeType: "S" }
       ],
       GlobalSecondaryIndexes: [
         {
           IndexName: "CreatedAtIndex",
           KeySchema: [{ AttributeName: "createdAt", KeyType: "HASH" }],
+          Projection: { ProjectionType: "ALL" },
+          ProvisionedThroughput: {
+            ReadCapacityUnits: 1,
+            WriteCapacityUnits: 1,
+          },
+        },
+        {
+          IndexName: "UserIdIndex",
+          KeySchema: [{ AttributeName: "userId", KeyType: "HASH" }],
           Projection: { ProjectionType: "ALL" },
           ProvisionedThroughput: {
             ReadCapacityUnits: 1,

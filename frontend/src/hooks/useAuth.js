@@ -27,6 +27,7 @@ export const useAuth = () => {
       setUser(user);
       setError(null);
       queryClient.invalidateQueries({ queryKey: ["articles"] });
+      queryClient.invalidateQueries({ queryKey: ["myArticles"] });
     },
     onError: (err) => {
       setError(err?.message || "Login Failed");
@@ -42,6 +43,7 @@ export const useAuth = () => {
       setUser(user);
       setError(null);
       queryClient.invalidateQueries({ queryKey: ["articles"] });
+      queryClient.invalidateQueries({ queryKey: ["myArticles"] });
     },
     onError: (err) => {
       setError(err?.message || "Registration Failed");

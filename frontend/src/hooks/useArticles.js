@@ -4,6 +4,7 @@ import {
   deleteArticle,
   getAllArticles,
   getArticleById,
+  getMyArticles,
   updateArticle,
 } from "../api/articlesApi";
 import { useEffect, useState } from "react";
@@ -13,6 +14,39 @@ export const useGetArticles = (page, limit) => {
   const { data, isLoading, error, isFetching } = useQuery({
     queryKey: ["articles", page, limit],
     queryFn: () => getAllArticles(page, limit),
+    keepPreviousData: true,
+  });
+
+  useEffect(() => {
+    if (data?.articles) {
+      setAllArticles((prev) => {
+        const newArticles = data.articles.filter(
+          (newArticle) =>
+            !prev.some(
+              (existingArticle) => existingArticle.id === newArticle.id
+            )
+        );
+        return [...prev, ...newArticles];
+      });
+    }
+  }, [data]);
+
+  return {
+    data: {
+      ...data,
+      articles: allArticles,
+    },
+    isLoading,
+    error,
+    isFetchingNextPage: isFetching && !!page,
+  };
+};
+
+export const useGetMyArticles = (page, limit) => {
+  const [allArticles, setAllArticles] = useState([]);
+  const { data, isLoading, error, isFetching } = useQuery({
+    queryKey: ["myArticles", page, limit],
+    queryFn: () => getMyArticles(page, limit),
     keepPreviousData: true,
   });
 

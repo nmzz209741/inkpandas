@@ -37,7 +37,14 @@ class DynamoDBWrapper {
     }
   }
 
-  async query(tableName, indexName, keyName, keyValue) {
+  async query(
+    tableName,
+    indexName,
+    keyName,
+    keyValue,
+    limit = 50,
+    lastKey = null
+  ) {
     const command = new QueryCommand({
       TableName: tableName,
       IndexName: indexName,
@@ -45,11 +52,15 @@ class DynamoDBWrapper {
       ExpressionAttributeValues: {
         ":value": keyValue,
       },
+      Limit: limit,
+      ...(lastKey && { ExclusiveStartKey: lastKey }),
     });
-
     try {
-      const { Items } = await docClient.send(command);
-      return Items || [];
+      const { Items, LastEvaluatedKey } = await docClient.send(command);
+      return {
+        items: Items || [],
+        lastKey: LastEvaluatedKey,
+      };
     } catch (error) {
       console.error(`DynamoDB QUERY Error: ${error.message}`, {
         tableName,

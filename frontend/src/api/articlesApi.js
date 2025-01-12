@@ -11,6 +11,19 @@ const getAllArticles = async (page, limit = 8) => {
   }
 };
 
+const getMyArticles = async (page, limit = 100) => {
+  try {
+    const response = await api.get("/articles/myArticles", {
+      params: { page, limit },
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(
+      error.response?.data?.message || "Failed to fetch articles"
+    );
+  }
+};
+
 const getArticleById = async (id) => {
   try {
     const response = await api.get(`/articles/${id}`);
@@ -54,6 +67,7 @@ const deleteArticle = async (id) => {
 
 export {
   getAllArticles,
+  getMyArticles,
   getArticleById,
   createArticle,
   updateArticle,
