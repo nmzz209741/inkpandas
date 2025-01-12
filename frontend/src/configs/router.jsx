@@ -10,6 +10,7 @@ import LoginPage from "../components/pages/LoginPage";
 import RegisterPage from "../components/pages/RegisterPage";
 import ProtectedRoute from "../components/common/ProtectedRoute";
 import ArticlesListPage from "../components/pages/ArticlesListPage";
+import ArticleDetailPage from "../components/pages/ArticleDetailPage";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,11 @@ const router = createBrowserRouter([
       {
         path: "articles",
         element: <ArticlesListPage />,
+      },
+      {
+        path: "articles/:id",
+
+        element: <ArticleDetailPage />,
       },
       {
         path: "about",

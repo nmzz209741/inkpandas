@@ -1,4 +1,5 @@
-import { Typography, Box, Chip, Paper, Grid2 } from "@mui/material";
+import { Typography, Box, Chip, Paper, Grid2, Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const styles = {
   articleCard: {
@@ -48,6 +49,11 @@ const styles = {
 };
 
 const ArticleCard = ({ article }) => {
+  const navigate = useNavigate();
+
+  const handleArticleClick = (id) => {
+    navigate(`/articles/${id}`);
+  };
   return (
     <Grid2
       size={{
@@ -74,6 +80,10 @@ const ArticleCard = ({ article }) => {
             color="primary"
             variant="outlined"
             sx={styles.chip}
+            onClick={(e) => {
+              e.stopPropagation(); // Prevent card click event
+              handleArticleClick(article.id);
+            }}
           />
         </Box>
       </Paper>
