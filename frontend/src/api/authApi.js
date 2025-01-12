@@ -6,7 +6,7 @@ const register = async (credentials) => {
     return response.data;
   } catch (error) {
     throw new Error(
-      error.response?.data?.message || "User Registration failed"
+      error.response?.data?.error || "User Registration failed"
     );
   }
 };
@@ -16,7 +16,7 @@ const login = async (credentials) => {
     const response = await api.post("/auth/signin", credentials);
     return response.data;
   } catch (error) {
-    throw new Error(error.response?.data?.message || "User Login failed");
+    throw new Error(error.response?.data?.error || "User Login failed");
   }
 };
 

@@ -21,7 +21,7 @@ export const useAuth = () => {
   const loginMutation = useMutation({
     mutationFn: (credentials) => login(credentials),
     onSuccess: (data) => {
-      const { token, ...user } = data;
+      const { token, user } = data;
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));
       setUser(user);
@@ -29,14 +29,14 @@ export const useAuth = () => {
       queryClient.invalidateQueries({ queryKey: ["articles"] });
     },
     onError: (err) => {
-      setError(err.response?.data?.message || "Login Failed");
+      setError(err?.message || "Login Failed");
     },
   });
 
   const registerMutation = useMutation({
     mutationFn: (credentials) => register(credentials),
     onSuccess: (data) => {
-      const { token, ...user } = data;
+      const { token, user } = data;
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));
       setUser(user);
@@ -44,7 +44,7 @@ export const useAuth = () => {
       queryClient.invalidateQueries({ queryKey: ["articles"] });
     },
     onError: (err) => {
-      setError(err.response?.data?.message || "Registration Failed");
+      setError(err?.message || "Registration Failed");
     },
   });
 

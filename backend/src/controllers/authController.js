@@ -8,7 +8,7 @@ export const register = async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    res.status(400).json({ error: "Username and password are required" });
+    return res.status(400).json({ error: "Username and password are required" });
   }
 
   try {
@@ -19,7 +19,7 @@ export const register = async (req, res) => {
       email
     );
     if (existingUser.length > 0) {
-      res.status(400).json({ error: "User already exists in the database" });
+      return res.status(400).json({ error: "User already exists in the database" });
     }
 
     const salt = await bcrypt.genSalt(10);
@@ -37,20 +37,21 @@ export const register = async (req, res) => {
         }
       );
 
-      res.status(201).json({
+      return res.status(201).json({
         message: "User registered successfully",
         token,
+        user: { id, email },
       });
     }
   } catch (error) {
-    res.status(500).json({ error: "Failed to register user" });
+    return res.status(500).json({ error: "Failed to register user" });
   }
 };
 
 export const signin = async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
-    res.status(400).json({ error: "Username and password are required" });
+    return res.status(400).json({ error: "Username and password are required" });
   }
 
   try {
@@ -61,7 +62,7 @@ export const signin = async (req, res) => {
       email
     );
     if (!user.length) {
-      res.status(400).json({ error: "Invalid credentials" });
+      return res.status(400).json({ error: "Invalid credentials" });
     }
     const { password: expectedPassword, id } = user[0];
 
@@ -74,11 +75,12 @@ export const signin = async (req, res) => {
       expiresIn: "30d",
     });
 
-    res.status(201).json({
+    return res.status(201).json({
       message: "User logged in successfully",
       token,
+      user: { id, email },
     });
   } catch (error) {
-    res.status(500).json({ error: "Failed to login user" });
+    return res.status(500).json({ error: "Failed to login user" });
   }
 };
