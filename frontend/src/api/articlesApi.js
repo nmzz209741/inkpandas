@@ -1,6 +1,6 @@
 import api from "../services/api";
 
-const getAllArticles = async (page, limit = 50) => {
+const getAllArticles = async (page, limit = 8) => {
   try {
     const response = await api.get("/articles", { params: { page, limit } });
     return response.data;
