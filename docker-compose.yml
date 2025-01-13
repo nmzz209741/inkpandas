@@ -1,53 +1,18 @@
 version: '3.8'
 services:
-  backend:
+  app:
     build:
-      context: ./backend
+      context: .
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - "80:80"      # Nginx
+      - "3000:3000"  # Backend API
+      - "8000:8000"  # DynamoDB Local
     environment:
-      - NODE_ENV=local
-      - AWS_ACCESS_KEY_ID=local
-      - AWS_SECRET_ACCESS_KEY=local
-    depends_on:
-      - dynamodb-local
-    networks:
-      - backend-network
-    develop:
-      watch:
-        - path: ./backend
-          action: sync+restart
-          target: /app/backend
-          ignore:
-            - node_modules/
-        - path: ./backend/package.json
-          action: rebuild
-
-  dynamodb-local:
-    image: amazon/dynamodb-local:latest
-    container_name: dynamodb-local
-    ports:
-      - "8000:8000"
-    command: "-jar DynamoDBLocal.jar -sharedDb -dbPath ./data"
+      - NODE_ENV=development
+      - AWS_REGION=local
     volumes:
-      - "./docker/dynamodb:/home/dynamodblocal/data"
-    working_dir: /home/dynamodblocal
-    networks:
-      - backend-network
-  dynamodb: 
-    image: "aaronshaf/dynamodb-admin"
-    container_name: dynamodb-admin
-    depends_on:
-      - dynamodb-local
-    ports:
-      - "8001:8001"
-    environment:
-      - DYNAMO_ENDPOINT=http://dynamodb-local:8000
-      - AWS_REGION=ap-southeast-1
-    networks:
-      - backend-network
+      - dynamodb-data:/inkpandas/data
 
-networks:
-  backend-network:
-    driver: bridge
+volumes:
+  dynamodb-data:
