@@ -6,6 +6,7 @@ import {
   createArticle,
   updateArticle,
   deleteArticle,
+  getArticleByUserId,
 } from "../controllers/articlesController.js";
 import { validate } from "../middlewares/validate.js";
 import {
@@ -16,6 +17,7 @@ import {
 const router = express.Router();
 
 router.get("/", getArticles);
+router.get("/myArticles", protect, getArticleByUserId);
 router.get("/:id", getArticleById);
 router.post("/", protect, validate(articleCreationSchema), createArticle);
 router.patch("/:id", protect, validate(updateArticleSchema), updateArticle);

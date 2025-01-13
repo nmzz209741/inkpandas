@@ -33,6 +33,27 @@ export const getArticleById = asyncHandler(async (req, res) => {
   }
 });
 
+export const getArticleByUserId = asyncHandler(async (req, res) => {
+  const { page, limit = 50 } = req.query;
+  const userId = req.user?.id;
+  try {
+    const result = await dynamo.query(
+      ARTICLES_TABLE,
+      "UserIdIndex",
+      "userId",
+      userId,
+      parseInt(limit),
+      page ? JSON.parse(page) : null
+    );
+    res.status(200).json({
+      articles: result.items,
+      nextPage: result.lastKey ? JSON.stringify(result.lastKey) : null,
+    });
+  } catch (error) {
+    throw createError(500, JSON.stringify(error));
+  }
+});
+
 export const createArticle = asyncHandler(async (req, res) => {
   const { title, content } = req.body;
 

@@ -8,7 +8,9 @@ export const register = async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    res.status(400).json({ error: "Username and password are required" });
+    return res
+      .status(400)
+      .json({ error: "Username and password are required" });
   }
 
   try {
@@ -18,8 +20,10 @@ export const register = async (req, res) => {
       "email",
       email
     );
-    if (existingUser.length > 0) {
-      res.status(400).json({ error: "User already exists in the database" });
+    if (existingUser.items.length > 0) {
+      return res
+        .status(400)
+        .json({ error: "User already exists in the database" });
     }
 
     const salt = await bcrypt.genSalt(10);
@@ -37,20 +41,24 @@ export const register = async (req, res) => {
         }
       );
 
-      res.status(201).json({
+      return res.status(201).json({
         message: "User registered successfully",
         token,
+        user: { id: newUser.id, email: newUser.email },
       });
     }
   } catch (error) {
-    res.status(500).json({ error: "Failed to register user" });
+    console.error(error);
+    return res.status(500).json({ error: "Failed to register user" });
   }
 };
 
 export const signin = async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
-    res.status(400).json({ error: "Username and password are required" });
+    return res
+      .status(400)
+      .json({ error: "Username and password are required" });
   }
 
   try {
@@ -60,10 +68,10 @@ export const signin = async (req, res) => {
       "email",
       email
     );
-    if (!user.length) {
-      res.status(400).json({ error: "Invalid credentials" });
+    if (!user.items.length) {
+      return res.status(400).json({ error: "Invalid credentials" });
     }
-    const { password: expectedPassword, id } = user[0];
+    const { password: expectedPassword, id } = user.items[0];
 
     const isMatch = await bcrypt.compare(password, expectedPassword);
     if (!isMatch) {
@@ -74,11 +82,12 @@ export const signin = async (req, res) => {
       expiresIn: "30d",
     });
 
-    res.status(201).json({
+    return res.status(201).json({
       message: "User logged in successfully",
       token,
+      user: { id, email },
     });
   } catch (error) {
-    res.status(500).json({ error: "Failed to login user" });
+    return res.status(500).json({ error: "Failed to login user" });
   }
 };
