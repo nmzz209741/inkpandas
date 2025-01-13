@@ -55,7 +55,7 @@ cd /app/dynamodb\n\
 java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb -dbPath /app/data &\n\
 cd /app\n\
 sleep 5\n\
-NODE_ENV=development node scripts/createTables.js\n\
+NODE_ENV=production node scripts/createTables.js\n\
 npm start\n' > /usr/local/bin/start.sh && \
     chmod +x /usr/local/bin/start.sh
 

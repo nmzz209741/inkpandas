@@ -1,13 +1,21 @@
 import { DynamoDBClient, CreateTableCommand } from "@aws-sdk/client-dynamodb";
 
-const client = new DynamoDBClient({
-  region: "local",
-  endpoint: "http://localhost:8000",
-  credentials: {
-    accessKeyId: "local",
-    secretAccessKey: "local",
-  },
-});
+
+const clientConfig =
+  process.env.NODE_ENV !== "production"
+    ? {
+        region: "local",
+        endpoint: "http://127.0.0.1:8000",
+        credentials: {
+          accessKeyId: "local",
+          secretAccessKey: "local",
+        },
+      }
+    : {
+        region: "ap-south-1",
+      };
+
+const client = new DynamoDBClient(clientConfig);
 
 const createTables = async () => {
   const tables = [
@@ -40,7 +48,7 @@ const createTables = async () => {
       AttributeDefinitions: [
         { AttributeName: "id", AttributeType: "S" },
         { AttributeName: "createdAt", AttributeType: "S" },
-        { AttributeName: "userId", AttributeType: "S" }
+        { AttributeName: "userId", AttributeType: "S" },
       ],
       GlobalSecondaryIndexes: [
         {
