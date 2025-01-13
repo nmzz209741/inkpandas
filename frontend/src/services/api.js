@@ -1,7 +1,16 @@
 import axios from "axios";
 
+const getBaseUrl = () => {
+  if (import.meta.env.VITE_API_URL) {
+    return import.meta.env.VITE_API_URL;
+  }
+  // If no environment variable, use the current domain
+  const domain = window.location.origin;
+  return `${domain}/api`;
+};
+
 const api = axios.create({
-  baseURL: "http://localhost:3000/api",
+  baseURL: getBaseUrl(),
   headers: {
     "Content-Type": "application/json",
   },
