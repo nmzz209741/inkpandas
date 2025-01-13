@@ -78,7 +78,9 @@ const MyArticlesTable = ({
                   </TableSortLabel>
                 </TableCell>
               ))}
-              <TableCell align="center" variant="header">Actions</TableCell>
+              <TableCell align="center" variant="header">
+                Actions
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
