@@ -22,7 +22,8 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app
 
-ENV NODE_ENV=production
+ENV NODE_ENV=development
+ENV PURGE=false
 
 # Create necessary directories and set up nginx
 RUN mkdir -p data dynamodb /var/log/nginx /run/nginx && \
