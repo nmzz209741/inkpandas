@@ -144,7 +144,7 @@ export default function HomePage() {
           </Box>
         </Container>
       </Box>
-      {articles.length && (
+      {articles?.length && (
         <Container sx={styles.articleSection}>
           <Typography
             variant="h4"

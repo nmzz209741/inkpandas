@@ -5,20 +5,14 @@ import {
   useUpdateArticle,
 } from "../../hooks/useArticles";
 import { useForm, Controller } from "react-hook-form";
-import {
-  Box,
-  TextField,
-  Button,
-  Paper,
-  Alert,
-  Container,
-} from "@mui/material";
+import { Box, TextField, Button, Paper, Alert, Container } from "@mui/material";
 import { ArrowLeft } from "lucide-react";
 import LoadingSpinner from "../common/LoadingSpinner";
 import { useEffect, useRef } from "react";
 import PageHeading from "../common/PageHeading";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import { useQueryClient } from "@tanstack/react-query";
 
 const quillModules = {
   toolbar: [
@@ -147,6 +141,7 @@ export default function ArticlesForm() {
     id || ""
   );
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const quillRef = useRef(null);
 
   const {
@@ -171,13 +166,20 @@ export default function ArticlesForm() {
     }
   }, [article, reset]);
 
+  useEffect(() => {
+    queryClient.invalidateQueries(["articles"]);
+    queryClient.invalidateQueries(["myArticles"]);
+  }, [navigate, queryClient]);
+
   const onSubmit = async (data) => {
     try {
       if (isEditMode && id) {
         await updateArticleMutation.mutateAsync({ id, data });
+
         navigate(`/articles/${id}`);
       } else {
         await createArticleMutation.mutateAsync(data);
+
         navigate("/dashboard");
       }
     } catch (error) {
@@ -195,13 +197,13 @@ export default function ArticlesForm() {
 
   return (
     <Container sx={styles.container}>
-        <Button
-          startIcon={<ArrowLeft />}
-          onClick={() => navigate(-1)}
-          sx={styles.backButton}
-        >
-          Back
-        </Button>
+      <Button
+        startIcon={<ArrowLeft />}
+        onClick={() => navigate(-1)}
+        sx={styles.backButton}
+      >
+        Back
+      </Button>
       <PageHeading
         heading={isEditMode ? "Edit Article" : "Create New Article"}
       />

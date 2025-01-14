@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { USERS_TABLE, USERS_TABLE_GSI } from "../constants/index.js";
 import { UserModel } from "../models/user.js";
+import { cache } from "../lib/redis.js";
 
 export const register = async (req, res) => {
   const { email, password } = req.body;
@@ -40,6 +41,7 @@ export const register = async (req, res) => {
           expiresIn: "30d",
         }
       );
+      await cache.invalidatePattern("myArticles:*");
 
       return res.status(201).json({
         message: "User registered successfully",
@@ -81,6 +83,7 @@ export const signin = async (req, res) => {
     const token = jwt.sign({ id, email }, process.env.JWT_SECRET, {
       expiresIn: "30d",
     });
+    await cache.invalidatePattern("myArticles:*");
 
     return res.status(201).json({
       message: "User logged in successfully",

@@ -25,6 +25,8 @@ WORKDIR /app
 
 ENV NODE_ENV=development
 ENV PURGE=false
+ENV REDIS_HOST=redis-12601.crce179.ap-south-1-1.ec2.redns.redis-cloud.com
+ENV REDIS_PORT=12601
 
 # Create necessary directories and set up nginx
 RUN mkdir -p data /var/log/nginx /run/nginx && \

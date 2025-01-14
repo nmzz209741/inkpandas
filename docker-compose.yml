@@ -11,8 +11,11 @@ services:
       - AWS_ACCESS_KEY_ID=local
       - AWS_SECRET_ACCESS_KEY=local
       - DYNAMO_ENDPOINT=http://dynamodb-local:8000
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
     depends_on:
       - dynamodb-local
+      - redis
     networks:
       - backend-network
     develop:
@@ -59,6 +62,7 @@ services:
     working_dir: /home/dynamodblocal
     networks:
       - backend-network
+  
   dynamodb: 
     image: "aaronshaf/dynamodb-admin"
     container_name: dynamodb-admin
@@ -72,6 +76,20 @@ services:
     networks:
       - backend-network
 
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - "./docker/redis-data:/data"
+    command: redis-server --appendonly yes
+    networks:
+      - backend-network
+
 networks:
   backend-network:
     driver: bridge
+
+volumes:
+  dynamodb-data:
+  redis-data:
