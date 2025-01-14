@@ -99,7 +99,10 @@ export const useUpdateArticle = () => {
   return useMutation({
     mutationFn: ({ id, data }) => updateArticle(id, data),
     onSuccess: async (data, variables) => {
-      await queryClient.invalidateQueries({ queryKey: ["articles"] });
+      await queryClient.invalidateQueries({
+        queryKey: ["articles"],
+        refetchType: "all",
+      });
       await queryClient.invalidateQueries({
         queryKey: ["myArticles"],
         refetchType: "all",
@@ -116,7 +119,10 @@ export const useDeleteArticle = () => {
   return useMutation({
     mutationFn: (id) => deleteArticle(id),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["articles"] });
+      await queryClient.invalidateQueries({
+        queryKey: ["articles"],
+        refetchType: "all",
+      });
       await queryClient.invalidateQueries({
         queryKey: ["myArticles"],
         refetchType: "all",
