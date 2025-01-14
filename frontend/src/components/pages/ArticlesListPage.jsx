@@ -5,6 +5,7 @@ import ErrorLoading from "../common/ErrorLoading";
 import { Box, Button } from "@mui/material";
 import PageHeading from "../common/PageHeading";
 import ArticlesList from "../views/ArticlesList";
+import EmptyContainer from "../common/EmptyContainer";
 
 const styles = {
   searchBar: {
@@ -36,6 +37,10 @@ const ArticlesListPage = () => {
 
   if (error) {
     return <ErrorLoading />;
+  }
+
+  if (!articles.length) {
+    return <EmptyContainer contentType="articles" />;
   }
 
   return (
