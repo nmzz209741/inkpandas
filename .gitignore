@@ -36,4 +36,6 @@ tmp/
 temp/
 
 # Docker files
-docker
+docker/
+
+secrets

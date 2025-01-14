@@ -5,9 +5,7 @@ const getAllArticles = async (page, limit = 8) => {
     const response = await api.get("/articles", { params: { page, limit } });
     return response.data;
   } catch (error) {
-    throw new Error(
-      error.response?.data?.message || "Failed to fetch articles"
-    );
+    throw new Error(error.response?.data?.error || "Failed to fetch articles");
   }
 };
 
@@ -18,9 +16,7 @@ const getMyArticles = async (page, limit = 100) => {
     });
     return response.data;
   } catch (error) {
-    throw new Error(
-      error.response?.data?.message || "Failed to fetch articles"
-    );
+    throw new Error(error.response?.data?.error || "Failed to fetch articles");
   }
 };
 
@@ -29,7 +25,7 @@ const getArticleById = async (id) => {
     const response = await api.get(`/articles/${id}`);
     return response.data.result;
   } catch (error) {
-    throw new Error(error.response?.data?.message || "Failed to fetch article");
+    throw new Error(error.response?.data?.error || "Failed to fetch article");
   }
 };
 
@@ -38,9 +34,7 @@ const createArticle = async (data) => {
     const response = await api.post("/articles", data);
     return response.data;
   } catch (error) {
-    throw new Error(
-      error.response?.data?.message || "Failed to create article"
-    );
+    throw new Error(error.response?.data?.error || "Failed to create article");
   }
 };
 
@@ -49,9 +43,7 @@ const updateArticle = async (id, data) => {
     const response = await api.patch(`/articles/${id}`, data);
     return response.data;
   } catch (error) {
-    throw new Error(
-      error.response?.data?.message || "Failed to update article"
-    );
+    throw new Error(error.response?.data?.error || "Failed to update article");
   }
 };
 
@@ -60,9 +52,7 @@ const deleteArticle = async (id) => {
     const response = await api.delete(`/articles/${id}`);
     return response.message;
   } catch (error) {
-    throw new Error(
-      error.response?.data?.message || "Failed to delete article"
-    );
+    throw new Error(error.response?.data?.error || "Failed to delete article");
   }
 };
 
