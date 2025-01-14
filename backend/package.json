@@ -7,7 +7,8 @@
   "scripts": {
     "start": "node src/app.js",
     "dev": "nodemon --legacy-watch src/app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "keywords": [
     "inkpandas"
@@ -17,6 +18,7 @@
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.724.0",
     "@aws-sdk/lib-dynamodb": "^3.724.0",
+    "axios": "^1.7.9",
     "bcryptjs": "^2.4.3",
     "cluster": "^0.7.7",
     "cors": "^2.8.5",
@@ -30,6 +32,11 @@
     "yup": "^1.6.1"
   },
   "devDependencies": {
-    "nodemon": "^3.1.9"
+    "@babel/core": "^7.26.0",
+    "@babel/preset-env": "^7.26.0",
+    "babel-jest": "^29.7.0",
+    "nock": "^13.5.6",
+    "nodemon": "^3.1.9",
+    "sinon": "^19.0.2"
   }
 }
