@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import logo from "../../assets/images/bgLogo.png";
 import { getAllArticles } from "../../api/articlesApi";
 import ArticleCard from "../views/ArticleCard";
+import LoadingSpinner from "../common/LoadingSpinner";
 
 const styles = {
   hero: {
@@ -97,7 +98,7 @@ export default function HomePage() {
   }, []);
 
   if (loading) {
-    return <Typography>Loading...</Typography>;
+    return <LoadingSpinner />;
   }
 
   return (
