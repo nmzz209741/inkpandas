@@ -57,7 +57,8 @@ const updateArticle = async (id, data) => {
 
 const deleteArticle = async (id) => {
   try {
-    await api.delete(`/articles/${id}`);
+    const response = await api.delete(`/articles/${id}`);
+    return response.message;
   } catch (error) {
     throw new Error(
       error.response?.data?.message || "Failed to delete article"
