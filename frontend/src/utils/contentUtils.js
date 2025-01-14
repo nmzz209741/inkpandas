@@ -1,11 +1,27 @@
 export function stripHtml(html) {
-  // Create a temporary element
+  if (!html) return "";
+
   const temp = document.createElement("div");
-  // Set the HTML content
   temp.innerHTML = html;
-  // Get the text content
-  let text = temp.textContent || temp.innerText;
-  // Clean up extra whitespace
-  text = text.replace(/\s+/g, " ").trim();
+
+  const brElements = temp.getElementsByTagName("br");
+  for (const br of Array.from(brElements)) {
+    br.replaceWith("\n");
+  }
+
+  const blockElements = temp.querySelectorAll(
+    "p, div, h1, h2, h3, h4, h5, h6, pre"
+  );
+  for (const block of Array.from(blockElements)) {
+    block.innerHTML = "\n" + block.innerHTML + "\n";
+  }
+
+  let text = temp.textContent || temp.innerText || "";
+
+  text = text
+    .replace(/\n{3,}/g, "\n\n")
+    .replace(/[ \t]+/g, " ")
+    .trim();
+
   return text;
 }
