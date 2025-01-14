@@ -6,8 +6,10 @@ const redisClient = new Redis({
   password: process.env.REDIS_PASSWORD,
 });
 
+if (process.env.NODE_ENV !== 'test') {
 redisClient.on("connect", () => console.log("Redis Client Connected!"));
 redisClient.on("error", (error) => console.error("Redis Client Error:", error));
+}
 
 export const cache = {
   async get(key) {
