@@ -94,7 +94,9 @@ const DashboardPage = () => {
       (article) =>
         article.userId === user?.id &&
         (article.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          stripHtml(article.content).toLowerCase().includes(searchTerm.toLowerCase()))
+          stripHtml(article.content)
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase()))
     ) || [];
 
   const sortedArticles = sortArticles(filteredArticles);
@@ -109,6 +111,7 @@ const DashboardPage = () => {
     if (window.confirm("Are you sure you want to delete this article?")) {
       try {
         await deleteArticleMutation.mutateAsync(id);
+        navigate('/articles')
       } catch (error) {
         console.error("Failed to delete article:", error);
       }
