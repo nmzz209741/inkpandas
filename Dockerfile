@@ -22,6 +22,8 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app
 
+ENV NODE_ENV=production
+
 # Create necessary directories and set up nginx
 RUN mkdir -p data dynamodb /var/log/nginx /run/nginx && \
     chown -R www-data:www-data /var/log/nginx /run/nginx && \
@@ -49,14 +51,14 @@ RUN chown -R www-data:www-data /usr/share/nginx/html && \
 
 # Create startup script
 RUN echo '#!/bin/bash\n\
-mkdir -p /run/nginx\n\
-nginx -g "daemon off;" &\n\
-cd /app/dynamodb\n\
-java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb -dbPath /app/data &\n\
-cd /app\n\
-sleep 5\n\
-NODE_ENV=production node scripts/createTables.js\n\
-npm start\n' > /usr/local/bin/start.sh && \
+    mkdir -p /run/nginx\n\
+    nginx -g "daemon off;" &\n\
+    cd /app/dynamodb\n\
+    java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb -dbPath /app/data &\n\
+    cd /app\n\
+    sleep 5\n\
+    NODE_ENV=${NODE_ENV:-production} node scripts/createTables.js\n\
+    npm start\n' > /usr/local/bin/start.sh && \
     chmod +x /usr/local/bin/start.sh
 
 EXPOSE 80 3000 8000
