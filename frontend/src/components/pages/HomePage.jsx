@@ -1,10 +1,10 @@
-import { Typography, Box, Paper, Grid, Button, Container } from "@mui/material";
+import { Typography, Box, Grid, Button, Container } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { BookOpen, PenLine, Users } from "lucide-react";
 import logo from "../../assets/images/bgLogo.png";
 import { getAllArticles } from "../../api/articlesApi";
 import ArticleCard from "../views/ArticleCard";
+import LoadingSpinner from "../common/LoadingSpinner";
 
 const styles = {
   hero: {
@@ -42,32 +42,6 @@ const styles = {
     height: { xs: 80, md: 120 },
     objectFit: "contain",
     mb: 4,
-    animation: "float 3s ease-in-out infinite",
-    "@keyframes float": {
-      "0%, 100%": { transform: "translateY(0)" },
-      "50%": { transform: "translateY(-10px)" },
-    },
-  },
-  features: {
-    py: 8,
-    mb: 8,
-    backgroundColor: "grey.50",
-  },
-  featureIcon: {
-    width: 48,
-    height: 48,
-    color: "#1976d2",
-    mb: 2,
-  },
-  featureCard: {
-    height: "100%",
-    p: 4,
-    textAlign: "center",
-    transition: "all 0.3s ease",
-    "&:hover": {
-      transform: "translateY(-8px)",
-      boxShadow: (theme) => theme.shadows[8],
-    },
   },
   articleSection: {
     mb: 8,
@@ -101,13 +75,6 @@ const styles = {
     transition: "opacity 0.3s ease",
     textAlign: "center",
   },
-  cta: {
-    textAlign: "center",
-    mb: 8,
-    py: 6,
-    background: "linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)",
-    borderRadius: 2,
-  },
 };
 
 export default function HomePage() {
@@ -131,7 +98,7 @@ export default function HomePage() {
   }, []);
 
   if (loading) {
-    return <Typography>Loading...</Typography>;
+    return <LoadingSpinner />;
   }
 
   return (
@@ -177,25 +144,26 @@ export default function HomePage() {
           </Box>
         </Container>
       </Box>
-
-      <Container sx={styles.articleSection}>
-        <Typography
-          variant="h4"
-          gutterBottom
-          align="center"
-          fontWeight="bold"
-          mb={4}
-        >
-          Latest Articles
-        </Typography>
-        <Grid container spacing={3}>
-          {articles.map((article) => (
-            <Grid item xs={12} md={4} key={article.id}>
-              <ArticleCard article={article} key={article.id} />
-            </Grid>
-          ))}
-        </Grid>
-      </Container>
+      {articles.length && (
+        <Container sx={styles.articleSection}>
+          <Typography
+            variant="h4"
+            gutterBottom
+            align="center"
+            fontWeight="bold"
+            mb={4}
+          >
+            Latest Articles
+          </Typography>
+          <Grid container spacing={3}>
+            {articles.map((article) => (
+              <Grid item xs={12} md={4} key={article.id}>
+                <ArticleCard article={article} key={article.id} />
+              </Grid>
+            ))}
+          </Grid>
+        </Container>
+      )}
     </Box>
   );
 }

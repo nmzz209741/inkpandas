@@ -115,9 +115,12 @@ export const useDeleteArticle = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (id) => deleteArticle(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["articles"] });
-      queryClient.invalidateQueries({ queryKey: ["myArticles"] });
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["articles"] });
+      await queryClient.invalidateQueries({
+        queryKey: ["myArticles"],
+        refetchType: "all",
+      });
     },
   });
 };

@@ -1,18 +1,77 @@
 version: '3.8'
 services:
-  app:
+  backend:
     build:
-      context: .
+      context: ./backend
       dockerfile: Dockerfile
     ports:
-      - "80:80"      # Nginx
-      - "3000:3000"  # Backend API
-      - "8000:8000"  # DynamoDB Local
+      - "3000:3000"
     environment:
-      - NODE_ENV=development
-      - AWS_REGION=local
-    volumes:
-      - dynamodb-data:/inkpandas/data
+      - NODE_ENV=local
+      - AWS_ACCESS_KEY_ID=local
+      - AWS_SECRET_ACCESS_KEY=local
+      - DYNAMO_ENDPOINT=http://dynamodb-local:8000
+    depends_on:
+      - dynamodb-local
+    networks:
+      - backend-network
+    develop:
+      watch:
+        - path: ./backend
+          action: sync+restart
+          target: /app/backend
+          ignore:
+            - node_modules/
+        - path: ./backend/package.json
+          action: rebuild
 
-volumes:
-  dynamodb-data:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:3000/api
+    depends_on:
+      - backend
+      - dynamodb-local
+    networks:
+      - backend-network
+    develop:
+      watch:
+        - path: ./frontend
+          action: sync+restart
+          target: /app/frontend
+          ignore:
+            - node_modules/
+        - path: ./frontend/package.json
+          action: rebuild
+
+  dynamodb-local:
+    image: amazon/dynamodb-local:latest
+    container_name: dynamodb-local
+    ports:
+      - "8000:8000"
+    command: "-jar DynamoDBLocal.jar -sharedDb -dbPath ./data"
+    volumes:
+      - "./docker/dynamodb:/home/dynamodblocal/data"
+    working_dir: /home/dynamodblocal
+    networks:
+      - backend-network
+  dynamodb: 
+    image: "aaronshaf/dynamodb-admin"
+    container_name: dynamodb-admin
+    depends_on:
+      - dynamodb-local
+    ports:
+      - "8001:8001"
+    environment:
+      - DYNAMO_ENDPOINT=http://dynamodb-local:8000
+      - AWS_REGION=ap-southeast-1
+    networks:
+      - backend-network
+
+networks:
+  backend-network:
+    driver: bridge

@@ -1,10 +1,8 @@
 import { dynamo } from "../lib/dynamo.js";
-import asyncHandler from "express-async-handler";
-import createError from "http-errors";
 import { ARTICLES_TABLE } from "../constants/index.js";
 import { ArticleModel } from "../models/article.js";
 
-export const getArticles = asyncHandler(async (req, res) => {
+export const getArticles = async (req, res) => {
   const { page, limit = 50 } = req.query;
   if (limit > 100) {
     throw createError(400, "Limit cannot exceed 100 items per page");
@@ -14,26 +12,26 @@ export const getArticles = asyncHandler(async (req, res) => {
     limit: parseInt(limit),
     lastKey: page ? JSON.parse(page) : null,
   });
-  res.status(200).json({
+  return res.status(200).json({
     articles: result.items,
     nextPage: result.lastKey ? JSON.stringify(result.lastKey) : null,
   });
-});
+};
 
-export const getArticleById = asyncHandler(async (req, res) => {
+export const getArticleById = async (req, res) => {
   const { id } = req.params;
   try {
     const result = await dynamo.get(ARTICLES_TABLE, id);
     if (!result) {
       throw createError(404, `Article with id ${id} not found`);
     }
-    res.status(200).json({ result });
+    return res.status(200).json({ result });
   } catch (error) {
-    throw createError(500, JSON.stringify(error));
+    return res.status(500).json({ error });
   }
-});
+};
 
-export const getArticleByUserId = asyncHandler(async (req, res) => {
+export const getArticleByUserId = async (req, res) => {
   const { page, limit = 50 } = req.query;
   const userId = req.user?.id;
   try {
@@ -45,56 +43,58 @@ export const getArticleByUserId = asyncHandler(async (req, res) => {
       parseInt(limit),
       page ? JSON.parse(page) : null
     );
-    res.status(200).json({
+    return res.status(200).json({
       articles: result.items,
       nextPage: result.lastKey ? JSON.stringify(result.lastKey) : null,
     });
   } catch (error) {
-    throw createError(500, JSON.stringify(error));
+    return res.status(500).json({ error });
   }
-});
+};
 
-export const createArticle = asyncHandler(async (req, res) => {
+export const createArticle = async (req, res) => {
   const { title, content } = req.body;
 
   if (!title.trim() || !content.trim()) {
-    throw createError(400, "Title and content are required");
+    return res.status(400).json({ error: "Title and content are required" });
   }
-  const userId = req.user?.id;
 
+  const userId = req.user?.id;
   const newArticle = ArticleModel(title.trim(), content.trim(), userId);
 
   try {
     const article = await dynamo.put(ARTICLES_TABLE, newArticle);
-    res.status(201).json(article);
+    return res.status(201).json(article);
   } catch (error) {
-    throw createError(500, JSON.stringify(error));
+    return res.status(500).json({ error });
   }
-});
+};
 
-export const updateArticle = asyncHandler(async (req, res) => {
+export const updateArticle = async (req, res) => {
   const { title, content } = req.body;
   const { id } = req.params;
   const userId = req.user?.id;
 
   if (!title && !content) {
-    res.status(400).json({
+    return res.status(400).json({
       error: "At least one field (title or content) is required for update",
     });
   }
 
   if ((title && !title.trim()) || (content && !content.trim())) {
-    throw createError(400, "Title and content cannot be empty");
+    return res.status(400).json({ error: "Title and content cannot be empty" });
   }
 
   try {
     const article = await dynamo.get(ARTICLES_TABLE, id);
     if (!article) {
-      throw createError(404, `Article with id ${id} not found`);
+      return res.status(404).json({ error: `Article with id ${id} not found` });
     }
 
     if (article.userId != userId) {
-      throw createError(403, "User not authorized to update this article");
+      return res
+        .status(403)
+        .json({ error: "User not authorized to update this article" });
     }
 
     const updates = {
@@ -104,27 +104,30 @@ export const updateArticle = asyncHandler(async (req, res) => {
     };
 
     const updatedArticle = await dynamo.update(ARTICLES_TABLE, id, updates);
-    res.status(200).json({ updatedArticle });
+    return res.status(200).json({ updatedArticle });
   } catch (error) {
-    throw createError(500, JSON.stringify(error));
+    return res.status(500).json({ error });
   }
-});
+};
 
-export const deleteArticle = asyncHandler(async (req, res) => {
+export const deleteArticle = async (req, res) => {
   const { id } = req.params;
-  const userId = "1";
+  const userId = req.user?.id;
   try {
     const article = await dynamo.get(ARTICLES_TABLE, id);
 
     if (!article) {
-      throw createError(404, `Article with id ${id} not found`);
+      return res.status(404).json({ error: `Article with id ${id} not found` });
     }
     if (article.userId !== userId) {
-      throw createError(403, "User not authorized to delete this article");
+      return res
+        .status(403)
+        .json({ error: "User not authorized to delete this article" });
     }
     const deleted = await dynamo.delete(ARTICLES_TABLE, id);
-    res.status(204).json({ message: "Article deleted successfully" });
+    if (deleted)
+      return res.status(204).json({ message: "Article deleted successfully" });
   } catch (error) {
-    throw createError(500, JSON.stringify(error));
+    return res.status(500).json({ error });
   }
-});
+};

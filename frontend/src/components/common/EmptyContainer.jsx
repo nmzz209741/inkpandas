@@ -1,5 +1,5 @@
-import { Box, Button } from "@mui/material";
-import notFound from "../../assets/images/404.png";
+import { Box, Button, Typography } from "@mui/material";
+
 const styles = {
   errorContainer: {
     display: "flex",
@@ -7,15 +7,17 @@ const styles = {
     alignItems: "center",
     flexDirection: "column",
     width: "100%",
-    height: "100vh",
-    backgroundColor: "secondary.main",
+    height: "80vh",
   },
 };
 
-const ErrorLayout = () => {
+const EmptyContainer = ({ contentType }) => {
   return (
     <Box sx={styles.errorContainer}>
-      <img src={notFound} alt="404" style={{ width: "50%" }} />
+      <Typography variant="h6">
+        Oops!!! There are no {contentType} at the moment. Please check back
+        later.
+      </Typography>
       <Button
         variant="contained"
         color="primary"
@@ -27,4 +29,4 @@ const ErrorLayout = () => {
   );
 };
 
-export default ErrorLayout;
+export default EmptyContainer;
