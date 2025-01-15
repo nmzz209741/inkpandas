@@ -12,7 +12,7 @@ const shouldPurge = process.env.PURGE === "true";
 const clientConfig = isDevelopment
   ? {
       region: "local",
-      endpoint: "http://dynamodb-local:8000",
+      endpoint: "http://localhost:8000",
       credentials: {
         accessKeyId: "local",
         secretAccessKey: "local",

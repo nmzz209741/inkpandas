@@ -21,7 +21,10 @@ Make sure you have the following installed on your machine:
     ```bash
     cd inkpandas
     ```
-3. Check whether the docker compose file is present. Check whether backend and frontend both have their .env files. If not, create the .env files on the basis of `example.env` file descriptions
+3. Check whether the docker compose file is present. Check whether backend and frontend both have their .env files. If not, create the .env files on the basis of `example.env` file descriptions. Install npm dependencies for each as:
+    ```bash
+    npm i
+    ```
 4. Run the command
    `docker compose pull`
 5. Run the script:
