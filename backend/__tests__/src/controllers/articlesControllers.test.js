@@ -2,6 +2,7 @@ import sinon from "sinon";
 import nock from "nock";
 import { dynamo } from "../../../src/lib/dynamo.js";
 import { cache } from "../../../src/lib/redis.js";
+<<<<<<< Updated upstream
 import {
   getArticles,
   getArticleById,
@@ -12,6 +13,18 @@ import {
 } from "../../../src/controllers/articlesController.js";
 import axios from "axios";
 
+=======
+import axios from "axios";
+
+jest.mock("ioredis", () => {
+  return jest.fn().mockImplementation(() => ({
+    connect: jest.fn(),
+    disconnect: jest.fn(),
+    get: jest.fn(),
+    set: jest.fn(),
+  }));
+});
+>>>>>>> Stashed changes
 jest.mock("../../../src/models/article.js", () => ({
   ArticleModel: jest.fn().mockReturnValue({
     id: "mockId",
@@ -37,7 +50,13 @@ describe("Articles API", () => {
 
   beforeEach(() => {
     sandbox = sinon.createSandbox();
+<<<<<<< Updated upstream
     sandbox.stub(dynamo, "getAll").resolves({ items: [mockArticle], lastKey: null });
+=======
+    sandbox
+      .stub(dynamo, "getAll")
+      .resolves({ items: [mockArticle], lastKey: null });
+>>>>>>> Stashed changes
     dynamoGet = sandbox.stub(dynamo, "get").resolves(mockArticle);
     sandbox.stub(dynamo, "put").resolves(mockArticle);
     sandbox.stub(dynamo, "update").resolves(mockArticle);
@@ -98,7 +117,13 @@ describe("Articles API", () => {
         .get("/api/articles/mockId")
         .reply(404, { error: "Article with id mockId not found" });
 
+<<<<<<< Updated upstream
       await expect(axios.get(`${API_URL}/api/articles/mockId`)).rejects.toMatchObject({
+=======
+      await expect(
+        axios.get(`${API_URL}/api/articles/mockId`)
+      ).rejects.toMatchObject({
+>>>>>>> Stashed changes
         response: {
           status: 404,
           data: { error: "Article with id mockId not found" },
@@ -130,7 +155,14 @@ describe("Articles API", () => {
         .reply(400, { error: "Title and content are required" });
 
       await expect(
+<<<<<<< Updated upstream
         axios.post(`${API_URL}/api/articles`, { title: "", content: "Content is here" })
+=======
+        axios.post(`${API_URL}/api/articles`, {
+          title: "",
+          content: "Content is here",
+        })
+>>>>>>> Stashed changes
       ).rejects.toMatchObject({
         response: {
           status: 400,
@@ -165,7 +197,14 @@ describe("Articles API", () => {
         .reply(400, { error: "Title and content cannot be empty" });
 
       await expect(
+<<<<<<< Updated upstream
         axios.put(`${API_URL}/api/articles/mockId`, { title: "", content: "Updated content" })
+=======
+        axios.put(`${API_URL}/api/articles/mockId`, {
+          title: "",
+          content: "Updated content",
+        })
+>>>>>>> Stashed changes
       ).rejects.toMatchObject({
         response: {
           status: 400,
@@ -183,7 +222,14 @@ describe("Articles API", () => {
         .reply(404, { error: "Article with id mockId not found" });
 
       await expect(
+<<<<<<< Updated upstream
         axios.put(`${API_URL}/api/articles/mockId`, { title: "Updated Title", content: "Updated content" })
+=======
+        axios.put(`${API_URL}/api/articles/mockId`, {
+          title: "Updated Title",
+          content: "Updated content",
+        })
+>>>>>>> Stashed changes
       ).rejects.toMatchObject({
         response: {
           status: 404,
@@ -204,7 +250,13 @@ describe("Articles API", () => {
       const response = await axios.delete(`${API_URL}/api/articles/mockId`);
 
       expect(response.status).toBe(204);
+<<<<<<< Updated upstream
       expect(response.data).toEqual({ message: "Article deleted successfully" });
+=======
+      expect(response.data).toEqual({
+        message: "Article deleted successfully",
+      });
+>>>>>>> Stashed changes
 
       scope.done();
     });
@@ -215,7 +267,13 @@ describe("Articles API", () => {
         .delete("/api/articles/mockId")
         .reply(404, { error: "Article with id mockId not found" });
 
+<<<<<<< Updated upstream
       await expect(axios.delete(`${API_URL}/api/articles/mockId`)).rejects.toMatchObject({
+=======
+      await expect(
+        axios.delete(`${API_URL}/api/articles/mockId`)
+      ).rejects.toMatchObject({
+>>>>>>> Stashed changes
         response: {
           status: 404,
           data: { error: "Article with id mockId not found" },
@@ -232,7 +290,13 @@ describe("Articles API", () => {
         .delete("/api/articles/mockId")
         .reply(403, { error: "User not authorized to delete this article" });
 
+<<<<<<< Updated upstream
       await expect(axios.delete(`${API_URL}/api/articles/mockId`)).rejects.toMatchObject({
+=======
+      await expect(
+        axios.delete(`${API_URL}/api/articles/mockId`)
+      ).rejects.toMatchObject({
+>>>>>>> Stashed changes
         response: {
           status: 403,
           data: { error: "User not authorized to delete this article" },

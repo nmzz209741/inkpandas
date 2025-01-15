@@ -5,7 +5,20 @@ import { cache } from "../../../src/lib/redis.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import axios from "axios";
+<<<<<<< Updated upstream
 
+=======
+import Redis from "ioredis";
+
+jest.mock("ioredis", () => {
+  return jest.fn().mockImplementation(() => ({
+    connect: jest.fn(),
+    disconnect: jest.fn(),
+    get: jest.fn(),
+    set: jest.fn(),
+  }));
+});
+>>>>>>> Stashed changes
 describe("Auth API", () => {
   let sandbox;
   const API_URL = "http://localhost:3000";
