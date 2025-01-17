@@ -1,0 +1,285 @@
+{
+    "info": {
+        "_postman_id": "11487729-7a35-4f85-bfec-e906857278b1",
+        "name": "inkpandas",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "description": ""
+    },
+    "item": [
+        {
+            "name": "auth",
+            "item": [
+                {
+                    "name": "Register",
+                    "request": {
+                        "method": "POST",
+                        "url": {
+                            "raw": "http://localhost:3000/api/auth/register",
+                            "path": [
+                                "api",
+                                "auth",
+                                "register"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000"
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n  \"email\": \"test4@yopmail.com\",\n  \"password\": \"Test123\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Sign in",
+                    "request": {
+                        "method": "POST",
+                        "url": {
+                            "raw": "http://localhost:3000/api/auth/signin",
+                            "path": [
+                                "api",
+                                "auth",
+                                "signin"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000"
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n  \"email\": \"test0@yopmail.com\",\n  \"password\": \"Test123\"\n}"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "articles",
+            "item": [
+                {
+                    "name": "Get Articles",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://3.110.80.60:3000/api/articles?page=null&limit=10",
+                            "query": [
+                                {
+                                    "key": "page",
+                                    "value": "null"
+                                },
+                                {
+                                    "key": "limit",
+                                    "value": "10"
+                                }
+                            ],
+                            "variable": [],
+                            "path": [
+                                "api",
+                                "articles"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "3",
+                                "110",
+                                "80",
+                                "60"
+                            ],
+                            "port": "3000"
+                        }
+                    }
+                },
+                {
+                    "name": "Create Article",
+                    "request": {
+                        "method": "POST",
+                        "url": {
+                            "raw": "http://localhost:3000/api/articles/",
+                            "path": [
+                                "api",
+                                "articles"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000"
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n  \"title\": \"Test 3\",\n  \"content\": \"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus inventore in iure doloremque sapiente sint atque quam quis excepturi illum! Inventore doloribus quaerat et, voluptatum est doloremque. Blanditiis, sint. Earum!\"\n}"
+                        },
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IktIQmtVRkE5SmYwc2xMMXRfNDRnSyIsImVtYWlsIjoidGVzdDFAeW9wbWFpbC5jb20iLCJpYXQiOjE3MzY2Nzk3NTEsImV4cCI6MTczOTI3MTc1MX0.s23ArmzI6pLLUTX7uacnWi0AOemwY5nyj6aVUEpx7co",
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Article By Id",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://localhost:3000/api/articles/OZzrAON2s0ezTDu7Vi0BO",
+                            "path": [
+                                "api",
+                                "articles",
+                                "OZzrAON2s0ezTDu7Vi0BO"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000"
+                        },
+                        "header": [
+                            {
+                                "key": "id",
+                                "value": "FNaLLWV36ztQrkUcIaMAq",
+                                "disabled": true
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "Get My Articles",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://localhost:3000/api/articles/myArticles?page=null&limit=10",
+                            "query": [
+                                {
+                                    "key": "page",
+                                    "value": "null"
+                                },
+                                {
+                                    "key": "limit",
+                                    "value": "10"
+                                }
+                            ],
+                            "variable": [],
+                            "path": [
+                                "api",
+                                "articles",
+                                "myArticles"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000"
+                        },
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Im5TelgzMzUySC1WZ2hVSlczdUw3WSIsImVtYWlsIjoidGVzdDBAeW9wbWFpbC5jb20iLCJpYXQiOjE3MzY2Nzk5NjcsImV4cCI6MTczOTI3MTk2N30.TDLyRFt4VMiVWajcQr5zpKlUyt6XnQhR3aM9IYmV1tg",
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Update Article",
+                    "request": {
+                        "method": "PATCH",
+                        "url": {
+                            "raw": "http://localhost:3000/api/articles/bc1PNRiiUl17p9wgPfGE4",
+                            "path": [
+                                "api",
+                                "articles",
+                                "bc1PNRiiUl17p9wgPfGE4"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000"
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n  \"title\": \"Work Test 7\"\n}"
+                        },
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IkJMcTBzaVhqUVpyNFRhdjA0ejV0cyIsImVtYWlsIjoidGVzdEB5b3BtYWlsLmNvbSIsImlhdCI6MTczNjQyMzQ0OCwiZXhwIjoxNzM5MDE1NDQ4fQ.9Fg35IU6_8oQNLity18c8pSuN4blEuDrKwzuzXRB1NA",
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Delete Article",
+                    "request": {
+                        "method": "DELETE",
+                        "url": {
+                            "raw": "http://localhost:3000/api/articles/FS1Ec2LOEpekwD3xcDWw2",
+                            "path": [
+                                "api",
+                                "articles",
+                                "FS1Ec2LOEpekwD3xcDWw2"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "health",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "http://localhost:3000/health",
+                    "path": [
+                        "health"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "3000"
+                }
+            }
+        }
+    ]
+}
